@@ -92,7 +92,7 @@ class RadioPlayer:
         if error == RadioPlayer.RadioPlayerError.ERROR and self.__error_count != 5:
             sleep(2)
             self.__error_count += 1
-            self.__send_command("restart")
+            RadioPlayer.send_command(data_port=self.__data_port, command="restart")
             return
 
         if error == RadioPlayer.RadioPlayerError.ERROR:
@@ -101,17 +101,11 @@ class RadioPlayer:
         WebRadioScraper.refreshM3U8Urls()
         self.__config = ConfigBrowser.getConfig()
 
-        self.__send_command("restart")
+        RadioPlayer.send_command(data_port=self.__data_port, command="restart")
 
     def __exit(self) -> None:
         self.__stop()
         self.__server.close()
-
-    def __send_command(self, command: str) -> None:
-        temp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        temp_socket.connect(("localhost", self.__data_port))
-        temp_socket.send(command.encode())
-        temp_socket.close()
 
     def __switch_channel(self, channel: str) -> None:
         if channel not in self.__config["channels"]:
@@ -127,8 +121,20 @@ class RadioPlayer:
         self.__current_channel = channel
 
         self.start()
-    
-    def set_default_channel(self, channel: str) -> None:
-        if channel in self.__config["channels"]:
-            self.__config["default channel"] = channel
-            ConfigBrowser.updateConfig(self.__config)
+
+    @staticmethod
+    def set_default_channel(channel: str) -> None:
+        config = ConfigBrowser.getConfig()
+        if channel in config["channels"]:
+            config["default channel"] = channel
+            ConfigBrowser.updateConfig(config)
+            print(f"Default channel set to {channel}")
+        else:
+            print("Error: Channel is not included in the channels list")
+
+    @staticmethod
+    def send_command(data_port: int, command: str) -> None:
+        temp_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        temp_socket.connect(("localhost", data_port))
+        temp_socket.send(command.encode())
+        temp_socket.close()
