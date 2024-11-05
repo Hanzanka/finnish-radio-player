@@ -20,5 +20,9 @@
         "Classic Hits": "https://ms-live-classichits.nm-elemental.nelonenmedia.fi/master.m3u8",
         "Helmiradio": "https://ms-live-helmiradio.nm-elemental.nelonenmedia.fi/master.m3u8",
         "Kantriradio": "https://ms-live-kantriradio.nm-elemental.nelonenmedia.fi/master.m3u8"
-    }
+    },
+    "default channel": "Radio Suomipop",
+    "default port": 6996,
+    "port": 0,
+    "playback device": "xx"
 }
