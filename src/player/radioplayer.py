@@ -44,8 +44,8 @@ class RadioPlayer:
         self.__error_count = 0
 
     def start(self) -> None:
-        os.system(f"pactl set-default-sink bluez_sink.{self.__config['playback device'].replace(':', '.')}.a2dp_sink")
-
+        os.system(f"pactl set-default-sink bluez_sink.{self.__config['playback device'].replace(':', '_')}.a2dp_sink")
+        
         media = self.__vlc_instance.media_new(
             self.__config["m3u8Urls"][self.__current_channel]
         )
@@ -54,7 +54,7 @@ class RadioPlayer:
         self.__close_main_loop = False
         self.__end_event.clear()
         restart = False
-
+        
         self.__vlc_player.play()
 
         while not self.__close_main_loop:
