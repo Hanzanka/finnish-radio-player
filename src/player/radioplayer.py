@@ -44,7 +44,7 @@ class RadioPlayer:
         self.__error_count = 0
 
     def start(self) -> None:
-        os.system("pactl set-default-sink bluez_sink.88_C9_E8_F0_38_C2.a2dp_sink")
+        os.system(f"pactl set-default-sink bluez_sink.{self.__config['playback device'].replace(':', '.')}.a2dp_sink")
 
         media = self.__vlc_instance.media_new(
             self.__config["m3u8Urls"][self.__current_channel]
