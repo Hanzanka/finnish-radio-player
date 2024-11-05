@@ -5,6 +5,7 @@ import vlc
 from threading import Event, Thread
 from time import sleep
 from enum import Enum
+import os
 
 
 class RadioPlayer:
@@ -16,7 +17,7 @@ class RadioPlayer:
     def __init__(self, data_port) -> None:
         self.__config = ConfigBrowser.getConfig()
 
-        self.__vlc_instance = vlc.Instance()
+        self.__vlc_instance = vlc.Instance("--aout=pulse")
         self.__vlc_player = self.__vlc_instance.media_player_new()
         self.__vlc_player.event_manager().event_attach(
             vlc.EventType.MediaPlayerEncounteredError,
@@ -43,10 +44,13 @@ class RadioPlayer:
         self.__error_count = 0
 
     def start(self) -> None:
+        os.system("pactl set-default-sink bluez_sink.88_C9_E8_F0_38_C2.a2dp_sink")
+
         media = self.__vlc_instance.media_new(
             self.__config["m3u8Urls"][self.__current_channel]
         )
         self.__vlc_player.set_media(media)
+
         self.__close_main_loop = False
         self.__end_event.clear()
         restart = False
