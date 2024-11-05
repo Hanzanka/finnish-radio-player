@@ -72,3 +72,17 @@ Enable user lingering (IDK this didn't work before using this)
 sudo loginctl enable-linger [username]
 ```
 ### There may appear errors when going though the installation steps (And there is maybe other things needed to be configured that i didn't remember here)
+
+## Adjust the audio of the playback device
+### Get the sink name of the playback device:
+```bash
+pactl list sinks
+```
+### Set the volume of the playback device:
+```bash
+pactl set-sink-volume [sink name] 50%
+```
+Configure the audio-format of the device:
+```bash
+pactl set-sink-properties [sink name] [property_name]=[value]
+```
