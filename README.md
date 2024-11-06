@@ -4,6 +4,7 @@ Used to play finnish radio channels
 ## Required Software
 - pulseaudio
 - bluez
+- VLC4
 
 ## Required Libraries
 - pydbus
